@@ -30,7 +30,7 @@ class SingleHeadAttention(nn.Module):
         # batch, seq_len (q), seq_len (k)
         q_k = q @ k.mT / torch.sqrt(torch.tensor(self.attention_dim))
         lower_triangular = torch.tril(torch.ones(q_k.shape[-1], q_k.shape[-1]))
-        mask = (lower_triangular == 0)
+        mask = lower_triangular == 0
         q_k = q_k.masked_fill(mask, float('-inf'))
 
         softmax_scores = nn.functional.softmax(q_k, dim=-1)
